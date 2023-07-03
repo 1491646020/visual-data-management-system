@@ -64,7 +64,6 @@ public class InfoController {
     }
 
     @RequiresPermissions(value = "delete",logical = Logical.OR)
-    @RequiresRoles(value = {"admin"},logical = Logical.OR)
     @DeleteMapping("/deleteOneByWeaponId")
     public ResultInfo deleteOneByWeaponId(Integer weaponId){
         return weaponInfoService.deleteOneByWeaponId(weaponId);

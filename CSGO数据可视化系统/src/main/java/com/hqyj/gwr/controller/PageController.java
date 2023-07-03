@@ -16,14 +16,12 @@ public class PageController {
         return "weapon-list";
     }
     @RequiresPermissions(value = {"add","update","delete"},logical = Logical.OR)
-    @RequiresRoles(value = {"admin"},logical = Logical.OR)
     @RequestMapping("/goWeaponAdd")
     public String goWeaponAdd() {
         return "weapon-add";
     }
 
     @RequiresPermissions(value = "update",logical = Logical.OR)
-    @RequiresRoles(value = {"admin"},logical = Logical.OR)
     @RequestMapping("/goWeaponEdit")
     public String goWeaponEdit() {
         return "weapon-edit";
