@@ -1,0 +1,490 @@
+﻿<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+
+    <meta charset="UTF-8">
+    <title>CSGO大数据平台</title>
+    <script th:src="@{/js/jquery-2.1.1.min.js}" type="text/javascript"></script>
+    <script type="text/javascript" th:src="@{/js/vue.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/index.js}"></script>
+
+    <script>
+        $(window).load(function () {
+            $(".loading").fadeOut()
+        })
+    </script>
+
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/map.css}">
+    <link rel="stylesheet" th:href="@{/css/index.css}">
+
+
+</head>
+<body>
+<div class="loading">
+    <div class="loadbox"><img src="picture/loading.gif"> 页面加载中...</div>
+</div>
+<div class="data" id="app">
+    <div class="data-title">
+        <div class="title-center ">CSGO武器数据演示</div>
+    </div>
+    <div class="data-content">
+        <div class="con-left fl">
+            <div class="left-top">
+                <div class="info boxstyle">
+                    <div class="title">枪械实时统计</div>
+                    <div class="info-main">
+                        <ul>
+                            <li><img src="picture/刀.png" width="48px" height="48px" alt=""><span>匕首总数</span>
+                                <p>{{daggerNums}}</p></li>
+                            <li><img src="picture/手枪.png" width="48px" height="48px" alt=""><span>手枪总数</span>
+                                <p>{{pistolNums}}</p></li>
+                            <li><img src="picture/ak.png" width="48px" height="48px" alt=""><span>步枪总数</span>
+                                <p>{{rifleNums}}</p></li>
+                            <li><img src="picture/重型武器.png" width="48px" height="48px" alt=""><span>重型武器总数</span>
+                                <p>{{heavyWeaponNums}}</p></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="top-bottom boxstyle">
+                    <div class="title">武器分类饼状图</div>
+                    <div id="echarts_1" class="charts"></div>
+                </div>
+            </div>
+            <div class="left-bottom boxstyle">
+                <div class="title">武器分类环形图</div>
+                <div id="echarts_2" class="charts"></div>
+            </div>
+        </div>
+        <div class="con-center fl">
+            <div class="map-num">
+                <p>实时CSGO数据库武器总数</p>
+                <div class="num">
+                    <span>{{weaponNums}}</span>
+                </div>
+            </div>
+            <div class="cen-top map" id="">
+                <template>
+                    <el-row>
+<!--                        <el-button round>圆角按钮</el-button>-->
+                        <el-button type="warning" round><a href="https://www.csgo.com.cn/hd/1610/info/index.html">游戏背景</a></el-button>
+                        <el-button type="primary" size="medium" round><a href="/weaponList">武器列表</a></el-button>
+                        <el-button type="success" round><a href="https://www.csgo.com.cn/hd/1610/info/equipment.html">装备道具</a></el-button>
+                        <el-button type="info" round><a href="https://www.csgo.com.cn/hd/1610/info/map.html">地图中心</a></el-button>
+                        <el-button type="danger" round><a href="https://www.csgo.com.cn/hd/1610/info/recruit.html">新兵报道</a></el-button>
+                        <el-button type="danger" round><a href="/">退出登录</a></el-button>
+                    </el-row>
+<!--                    <a href="https://www.csgo.com.cn/hd/1610/info/equipment.html">啊感到骄傲和-->
+
+<!--                </a>-->
+                </template>
+            </div>
+        </div>
+
+        <div class="con-right fr">
+            <div class="right-top boxstyle">
+                <div class="title">武器精准度前五</div>
+                <div id="echarts_4" class="charts"></div>
+            </div>
+            <div class="right-center boxstyle">
+                <div class="title">售价前五</div>
+                <div id="echarts_5" class="charts"></div>
+            </div>
+            <div class="right-bottom boxstyle">
+                <div class="title">伤害前五</div>
+                <div id="echarts_6" class="charts"></div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+
+<script src="js/echarts.min.js"></script>
+<script src="js/china.js"></script>
+<script src="js/echarts.js"></script>
+</html>
+<script>
+    new Vue({
+        el: "#app",
+        data: {
+            weaponNums: "",
+            daggerNums: "",
+            pistolNums: "",
+            rifleNums: "",
+            heavyWeaponNums: "",
+
+        },
+        methods: {
+            selectWeaponNums() {
+                var _this = this
+                $.ajax({
+                    url: "/selectWeaponNums",
+                    type: "get",
+                    dataType: "json",
+                    success: function (rs) {
+                        _this.weaponNums = rs.data
+                    }
+                })
+            },
+            selectDaggerNums() {
+                var _this = this
+                $.ajax({
+                    url: "/selectDaggerNums",
+                    type: "get",
+                    dataType: "json",
+                    success: function (rs) {
+                        _this.daggerNums = rs.data
+                    }
+                })
+            },
+            selectPistolNums() {
+                var _this = this
+                $.ajax({
+                    url: "/selectPistolNums",
+                    type: "get",
+                    dataType: "json",
+                    success: function (rs) {
+                        _this.pistolNums = rs.data
+                    }
+                })
+            },
+            selectRifleNums() {
+                var _this = this
+                $.ajax({
+                    url: "/selectRifleNums",
+                    type: "get",
+                    dataType: "json",
+                    success: function (rs) {
+                        _this.rifleNums = rs.data
+                    }
+                })
+            },
+            selectHeavyWeaponNums() {
+                var _this = this
+                $.ajax({
+                    url: "/selectHeavyWeaponNums",
+                    type: "get",
+                    dataType: "json",
+                    success: function (rs) {
+                        _this.heavyWeaponNums = rs.data
+                    }
+                })
+            },
+            echarts_4() {
+                // 基于准备好的dom，初始化echarts实例
+                var myChart = echarts.init(document.getElementById('echarts_4'));
+                //alert("1111")
+                $.ajax({
+                    url:"/selectTop5AttackRang",
+                    type:"get",
+                    dataType:"json",
+                    success:function (rs) {
+                        option = {
+                            //  backgroundColor: '#00265f',
+                            tooltip: {
+                                trigger: 'axis',
+                                axisPointer: { type: 'shadow'}
+                            },
+                            grid: {
+                                left: '0%',
+                                top:'10px',
+                                right: '0%',
+                                bottom: '4%',
+                                containLabel: true
+                            },
+                            xAxis: [{
+                                type: 'category',
+                                data: rs.data.names,
+                                axisLine: {
+                                    show: true,
+                                    lineStyle: {
+                                        color: "rgba(255,255,255,.1)",
+                                        width: 1,
+                                        type: "solid"
+                                    },
+                                },
+
+                                axisTick: {
+                                    show: false,
+                                },
+                                axisLabel:  {
+                                    interval: 0,
+                                    // rotate:50,
+                                    show: true,
+                                    splitNumber: 15,
+                                    textStyle: {
+                                        color: "rgba(255,255,255,.6)",
+                                        fontSize: '12',
+                                    },
+                                },
+                            }],
+                            yAxis: [{
+                                type: 'value',
+                                axisLabel: {
+                                    //formatter: '{value} %'
+                                    show:true,
+                                    textStyle: {
+                                        color: "rgba(255,255,255,.6)",
+                                        fontSize: '12',
+                                    },
+                                },
+                                axisTick: {
+                                    show: false,
+                                },
+                                axisLine: {
+                                    show: true,
+                                    lineStyle: {
+                                        color: "rgba(255,255,255,.1	)",
+                                        width: 1,
+                                        type: "solid"
+                                    },
+                                },
+                                splitLine: {
+                                    lineStyle: {
+                                        color: "rgba(255,255,255,.1)",
+                                    }
+                                }
+                            }],
+                            series: [
+                                {
+
+                                    type: 'bar',
+                                    data: rs.data.accurateRanges,
+                                    barWidth:'35%', //柱子宽度
+                                    // barGap: 1, //柱子之间间距
+                                    itemStyle: {
+                                        normal: {
+                                            color:'#27d08a',
+                                            opacity: 1,
+                                            barBorderRadius: 5,
+                                        }
+                                    }
+                                }
+
+                            ]
+                        };
+                        // 使用刚指定的配置项和数据显示图表。
+                        myChart.setOption(option);
+                        window.addEventListener("resize",function(){
+                            myChart.resize();
+                        });
+                    }
+                })
+            },
+            echarts_5() {
+                // 基于准备好的dom，初始化echarts实例
+                var myChart = echarts.init(document.getElementById('echarts_5'));
+
+                $.ajax({
+                    url:"/selectTop5Sole",
+                    type:"get",
+                    dataType:"json",
+                    success:function (rs) {
+                        option = {
+                            //  backgroundColor: '#00265f',
+                            tooltip: {
+                                trigger: 'axis',
+                                axisPointer: { type: 'shadow'}
+                            },
+                            grid: {
+                                left: '0%',
+                                top:'10px',
+                                right: '0%',
+                                bottom: '4%',
+                                containLabel: true
+                            },
+                            xAxis: [{
+                                type: 'category',
+                                data: rs.data.names,
+                                axisLine: {
+                                    show: true,
+                                    lineStyle: {
+                                        color: "rgba(255,255,255,.1)",
+                                        width: 1,
+                                        type: "solid"
+                                    },
+                                },
+
+                                axisTick: {
+                                    show: false,
+                                },
+                                axisLabel:  {
+                                    interval: 0,
+                                    // rotate:50,
+                                    show: true,
+                                    splitNumber: 15,
+                                    textStyle: {
+                                        color: "rgba(255,255,255,.6)",
+                                        fontSize: '12',
+                                    },
+                                },
+                            }],
+                            yAxis: [{
+                                type: 'value',
+                                axisLabel: {
+                                    //formatter: '{value} %'
+                                    show:true,
+                                    textStyle: {
+                                        color: "rgba(255,255,255,.6)",
+                                        fontSize: '12',
+                                    },
+                                },
+                                axisTick: {
+                                    show: false,
+                                },
+                                axisLine: {
+                                    show: true,
+                                    lineStyle: {
+                                        color: "rgba(255,255,255,.1	)",
+                                        width: 1,
+                                        type: "solid"
+                                    },
+                                },
+                                splitLine: {
+                                    lineStyle: {
+                                        color: "rgba(255,255,255,.1)",
+                                    }
+                                }
+                            }],
+                            series: [
+                                {
+
+                                    type: 'bar',
+                                    data: rs.data.prices,
+                                    barWidth:'35%', //柱子宽度
+                                    // barGap: 1, //柱子之间间距
+                                    itemStyle: {
+                                        normal: {
+                                            color:'#27d08a',
+                                            opacity: 1,
+                                            barBorderRadius: 5,
+                                        }
+                                    }
+                                }
+
+                            ]
+                        };
+                        // 使用刚指定的配置项和数据显示图表。
+                        myChart.setOption(option);
+                        window.addEventListener("resize",function(){
+                            myChart.resize();
+                        });
+                    }
+                })
+            },
+            echarts_6() {
+                // 基于准备好的dom，初始化echarts实例
+                var myChart = echarts.init(document.getElementById('echarts_6'));
+                // alert("1111")
+                $.ajax({
+                    url:"/selectTop5AttackDamage",
+                    type:"get",
+                    dataType:"json",
+                    success:function (rs) {
+                        option = {
+                            //  backgroundColor: '#00265f',
+                            tooltip: {
+                                trigger: 'axis',
+                                axisPointer: { type: 'shadow'}
+                            },
+                            grid: {
+                                left: '0%',
+                                top:'10px',
+                                right: '0%',
+                                bottom: '4%',
+                                containLabel: true
+                            },
+                            xAxis: [{
+                                type: 'category',
+                                data: rs.data.names,
+                                axisLine: {
+                                    show: true,
+                                    lineStyle: {
+                                        color: "rgba(255,255,255,.1)",
+                                        width: 1,
+                                        type: "solid"
+                                    },
+                                },
+
+                                axisTick: {
+                                    show: false,
+                                },
+                                axisLabel:  {
+                                    interval: 0,
+                                    // rotate:50,
+                                    show: true,
+                                    splitNumber: 15,
+                                    textStyle: {
+                                        color: "rgba(255,255,255,.6)",
+                                        fontSize: '12',
+                                    },
+                                },
+                            }],
+                            yAxis: [{
+                                type: 'value',
+                                axisLabel: {
+                                    //formatter: '{value} %'
+                                    show:true,
+                                    textStyle: {
+                                        color: "rgba(255,255,255,.6)",
+                                        fontSize: '12',
+                                    },
+                                },
+                                axisTick: {
+                                    show: false,
+                                },
+                                axisLine: {
+                                    show: true,
+                                    lineStyle: {
+                                        color: "rgba(255,255,255,.1	)",
+                                        width: 1,
+                                        type: "solid"
+                                    },
+                                },
+                                splitLine: {
+                                    lineStyle: {
+                                        color: "rgba(255,255,255,.1)",
+                                    }
+                                }
+                            }],
+                            series: [
+                                {
+
+                                    type: 'bar',
+                                    data: rs.data.damages,
+                                    barWidth:'35%', //柱子宽度
+                                    // barGap: 1, //柱子之间间距
+                                    itemStyle: {
+                                        normal: {
+                                            color:'#27d08a',
+                                            opacity: 1,
+                                            barBorderRadius: 5,
+                                        }
+                                    }
+                                }
+
+                            ]
+                        };
+                        // 使用刚指定的配置项和数据显示图表。
+                        myChart.setOption(option);
+                        window.addEventListener("resize",function(){
+                            myChart.resize();
+                        });
+                    }
+                })
+            }
+        },
+        mounted() {
+            this.selectWeaponNums()
+            this.selectDaggerNums()
+            this.selectPistolNums()
+            this.selectRifleNums()
+            this.selectHeavyWeaponNums()
+            this.echarts_4()
+            this.echarts_5()
+            this.echarts_6()
+
+
+        }
+    })
+</script>

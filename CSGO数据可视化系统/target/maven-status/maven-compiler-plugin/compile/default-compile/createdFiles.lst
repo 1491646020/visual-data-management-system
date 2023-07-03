@@ -1,0 +1,16 @@
+com\hqyj\gwr\mapper\WeaponMapper.class
+com\hqyj\gwr\service\UserService.class
+com\hqyj\gwr\pojo\User.class
+com\hqyj\gwr\service\WeaponInfoService.class
+com\hqyj\gwr\pojo\WeaponInfo.class
+com\hqyj\gwr\MyApplication.class
+com\hqyj\gwr\config\ShiroConfig.class
+com\hqyj\gwr\util\ResultInfo.class
+com\hqyj\gwr\service\UserServiceImpl.class
+com\hqyj\gwr\mapper\UserMapper.class
+com\hqyj\gwr\config\MyRolesAuthorizationFilter.class
+com\hqyj\gwr\service\WeaponInfoServiceImpl.class
+com\hqyj\gwr\controller\InfoController.class
+com\hqyj\gwr\controller\PageController.class
+com\hqyj\gwr\config\MybatisPlusConfig.class
+com\hqyj\gwr\config\MyRealm.class

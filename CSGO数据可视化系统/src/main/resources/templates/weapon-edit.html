@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>修改武器属性</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi"/>
+    <link rel="stylesheet" th:href="@{/lib/layui/css/layui.css}">
+    <link rel="stylesheet" th:href="@{/css/font.css}">
+    <link rel="stylesheet" th:href="@{/css/xadmin.css}">
+    <link rel="stylesheet" th:href="@{/lib/bootstrap/css/bootstrap.min.css}">
+    <!--离线-->
+    <link rel="stylesheet" th:href="@{/css/index.css}">
+    <script type="text/javascript" th:src="@{/lib/layui/layui.js}" charset="utf-8"></script>
+    <script type="text/javascript" th:src="@{/js/jquery-2.1.1.min.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}" type="text/javascript"></script>
+    <script type="text/javascript" th:src="@{/js/xadmin.js}"></script>
+    <!--导入vue-->
+    <script type="text/javascript" th:src="@{/js/vue.min.js}"></script>
+    <!--离线-->
+    <script type="text/javascript" th:src="@{/js/index.js}"></script>
+</head>
+
+<body>
+<div class="x-body" id="app">
+    <el-form ref="form" :model="weapon" label-width="80px">
+        <el-form-item label="武器Id">
+            <el-input v-model="weapon.id" disabled></el-input>
+        </el-form-item>
+        <el-form-item label="武器名称">
+            <el-input v-model="weapon.nameSc"></el-input>
+        </el-form-item>
+        <el-form-item label="简介">
+            <el-input v-model="weapon.descriptionSc"></el-input>
+        </el-form-item>
+        <el-form-item label="购买价格">
+            <el-input v-model="weapon.price"></el-input>
+        </el-form-item>
+        <el-form-item label="总子弹数">
+            <el-input v-model="weapon.clipSizeMax"></el-input>
+        </el-form-item>
+
+        <el-form-item>
+            <el-button type="primary" @click="editOne">立即修改</el-button>
+        </el-form-item>
+    </el-form>
+</div>
+<script>
+new Vue({
+    el:"#app",
+    data:{
+        weapon:{
+            id:"",
+            nameSc:"",
+            descriptionSc:"",
+            price:"",
+            clipSizeMax:""
+        }
+    },
+    methods:{
+        editOne(){
+            $.ajax({
+                url:"/editWeapon",
+                type:"post",
+                data:{
+                    id:this.weapon.id,
+                    nameSc:this.weapon.nameSc,
+                    descriptionSc:this.weapon.descriptionSc,
+                    price:this.weapon.price,
+                    clipSizeMax:this.weapon.clipSizeMax,
+                },
+                dataType:"json",
+                success:function (rs) {
+                    if(rs.code==200){
+                        layer.alert(rs.msg,{icon:6},function () {
+                            var frameIndex = parent.layer.getFrameIndex(window.name);
+                            parent.layer.close(frameIndex);
+                            parent.location.reload()
+                        })
+                    }else {
+                        layer.alert(rs.msg,{icon:5},function () {
+                            var frameIndex = parent.layer.getFrameIndex(window.name);
+                            parent.layer.close(frameIndex);
+                        })
+                    }
+                }
+            })
+        }
+
+    },
+    mounted(){
+        //回显
+        this.weapon=JSON.parse(localStorage.getItem("weapon"))
+    }
+})
+
+</script>
+
+</body>
+
+</html>

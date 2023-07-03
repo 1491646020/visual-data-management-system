@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <title>login</title>
+    <link rel="stylesheet" th:href="@{/css/font.css}">
+    <link rel="stylesheet" th:href="@{/css/xadmin.css}">
+    <link rel="stylesheet" th:href="@{/css/snow.css}">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/font-awesome.min.css}">
+    <script th:src="@{/js/jquery-2.1.1.min.js}" type="text/javascript"></script>
+    <script th:src="@{/js/vue.min.js}" type="text/javascript"></script>
+    <script th:src="@{/lib/layui/layui.js}" type="text/javascript"></script>
+    <script th:src="@{/js/xadmin.js}" type="text/javascript"></script>
+</head>
+
+<body>
+<div class="snow-container">
+    <div class="snow foreground"></div>
+    <div class="snow foreground layered"></div>
+    <div class="snow middleground"></div>
+    <div class="snow middleground layered"></div>
+    <div class="snow background"></div>
+    <div class="snow background layered"></div>
+</div>
+
+<div class="top-buttons-agileinfo">
+    <a class="active" href="/goRegister" >注册</a>
+</div>
+<h1 style="color: red">欢迎登录</h1>
+<div class="main-agileits" id="loginApp">
+    <!--form-stars-here-->
+    <div class="form-w3-agile">
+        <h2 class="sub-agileits-w3layouts">请输入账号密码完成登录</h2>
+        <form>
+            <input type="text" v-model="username" placeholder="username"/>
+            <input type="password" v-model="password" placeholder="password" />
+            <div class="submit-w3l">
+                <input type="button" @click="login" value="登录" >
+            </div>
+        </form>
+    </div>
+</div>
+<!--//form-ends-here-->
+<!-- copyright -->
+<div class="copyright w3-agile">
+
+</div>
+
+<script>
+new Vue({
+    el:"#loginApp",
+    data:{
+        username:"",
+        password:""
+    },
+    methods:{
+        login(){
+            $.ajax({
+                url:"/login",
+                type:"post",
+                data:{
+                    username:this.username,
+                    password:this.password
+                },
+                dataType:"json",
+                success:function (rs) {
+                    if(rs.code==200){
+                        alert(rs.msg)
+                        location.href="/goIndex"
+                    }else {
+                        alert(rs.msg)
+                    }
+                }
+            })
+        }
+    }
+})
+</script>
+</body>
+</html>

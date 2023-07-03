@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <title>register</title>
+    <link rel="stylesheet" th:href="@{/css/font.css}">
+    <link rel="stylesheet" th:href="@{/css/xadmin.css}">
+    <link rel="stylesheet" th:href="@{/css/snow.css}">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/font-awesome.min.css}">
+    <script th:src="@{/js/jquery-2.1.1.min.js}" type="text/javascript"></script>
+    <script th:src="@{/js/vue.min.js}" type="text/javascript"></script>
+    <script th:src="@{/lib/layui/layui.js}" type="text/javascript"></script>
+    <script th:src="@{/js/xadmin.js}" type="text/javascript"></script>
+</head>
+<body>
+<div class="snow-container">
+    <div class="snow foreground"></div>
+    <div class="snow foreground layered"></div>
+    <div class="snow middleground"></div>
+    <div class="snow middleground layered"></div>
+    <div class="snow background"></div>
+    <div class="snow background layered"></div>
+</div>
+
+<div class="top-buttons-agileinfo">
+	<a href="/" class="active">已有账号，返回登陆</a>
+</div>
+<div class="main-agileits">
+    <!--form-stars-here-->
+    <div class="form-w3-agile" id="registerApp">
+        <h2 class="sub-agileits-w3layouts">注册</h2>
+        <form>
+            <input type="text" v-model="username" placeholder="username" required="required"/>
+            <input type="password" v-model="password" placeholder="password" required="required"/>
+            <input type="text" v-model="perm" placeholder="perm" />
+            <input type="text" v-model="role" placeholder="role" />
+            <div class="submit-w3l">
+                <input type="button" @click="register" value="注册" >
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    new Vue({
+        el:"#registerApp",
+        data:{
+            username:"",
+            password:"",
+            perm:"",
+            role:""
+        },
+        methods:{
+            register(){
+                var _this=this
+                $.ajax({
+                    url:"/goRegister",
+                    type:"post",
+                    data:{
+                        username:this.username,
+                        password:this.password,
+                        perm:this.perm,
+                        role:this.role,
+
+                    },
+                    dataType:"json",
+                    success:function (rs) {
+                        if(rs.code==200){
+                            alert(rs.msg)
+                            location.href="/"
+                        }else {
+                            alert(rs.msg)
+                        }
+                    }
+                })
+            }
+        }
+    })
+</script>
+</body>
+</html>

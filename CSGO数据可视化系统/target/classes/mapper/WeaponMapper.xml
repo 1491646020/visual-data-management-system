@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hqyj.gwr.mapper.WeaponMapper">
+
+    <resultMap id="BaseResultMap" type="com.hqyj.gwr.pojo.WeaponInfo">
+            <id property="id" column="id" jdbcType="INTEGER"/>
+            <result property="name" column="name" jdbcType="VARCHAR"/>
+            <result property="nameSc" column="name_sc" jdbcType="VARCHAR"/>
+            <result property="descriptionSc" column="description_sc" jdbcType="VARCHAR"/>
+            <result property="itemSlotSc" column="item_slot_sc" jdbcType="VARCHAR"/>
+            <result property="accurateRange" column="accurate_range" jdbcType="VARCHAR"/>
+            <result property="killAwardPercentage" column="kill_award_percentage" jdbcType="VARCHAR"/>
+            <result property="price" column="price" jdbcType="INTEGER"/>
+            <result property="clipSizeMax" column="clip_size_max" jdbcType="INTEGER"/>
+            <result property="cycleTime" column="cycle_time" jdbcType="INTEGER"/>
+            <result property="damage" column="damage" jdbcType="INTEGER"/>
+    </resultMap>
+
+        <select id="selectTop5AttackRang" resultType="com.hqyj.gwr.pojo.WeaponInfo">
+                select name_sc,accurate_range from csgo.wuqi order by accurate_range desc limit 0,5
+        </select>
+
+        <select id="selectTop5Sole" resultType="com.hqyj.gwr.pojo.WeaponInfo">
+                select name_sc,price from csgo.wuqi order by price desc limit 0,5
+        </select>
+
+    <select id="selectTop5AttackDamage" resultType="com.hqyj.gwr.pojo.WeaponInfo">
+                select name_sc,damage from csgo.wuqi order by damage desc limit 0,5
+        </select>
+
+</mapper>
