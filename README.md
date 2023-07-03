@@ -1,4 +1,3 @@
-# -visual-data-management-system
 
 # **数据爬取采用Python的requests和pyMysql包，可视化系统采用技术为Spring Boot+Mybatis Plus+Vue+Shiro权限管理+Element ui组件+echarts组件(https://echarts.apache.org/)**
 
